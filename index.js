@@ -1,4 +1,4 @@
-import { Dalle } from "dalle-node";
+import { Configuration, OpenAIApi } from "openai";
 import express from "express";
 import bodyParser from "body-parser";
 
@@ -7,18 +7,21 @@ const port = 3000;
 
 index.use(bodyParser.json());
 
-const dalle = new Dalle("sess-3KCGoc7mhyNoGG4HChmvvTXSJlmx2RSBUejRYzF1");
-
 index.post('/imagine', (req, res) => {
     const prompt = req.body.prompt;
 
     (async () => {
-        const generations = await dalle.generate(prompt);
-        const imagePaths = [];
-        generations.data.map(item => {
-            imagePaths.push(item.generation.image_path);
-        })
-        res.json(imagePaths);
+        const configuration = new Configuration({
+            organization: "org-1yEkgSXVOsNHXYieDyeK3fwZ",
+            apiKey: "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",
+        });
+        const openai = new OpenAIApi(configuration);
+        const response = await openai.createImage({
+            prompt: prompt,
+            n: 1,
+            size: "1024x1024",
+        });
+        res.json(response.data);
     })()
 });
 
