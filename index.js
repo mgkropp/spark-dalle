@@ -1,6 +1,9 @@
 import { Configuration, OpenAIApi } from "openai";
+import dotenv from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
+
+dotenv.config();
 
 const index = express();
 const port = 3000;
@@ -12,8 +15,8 @@ index.post('/imagine', (req, res) => {
 
     (async () => {
         const configuration = new Configuration({
-            organization: "org-1yEkgSXVOsNHXYieDyeK3fwZ",
-            apiKey: "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",
+            organization: process.env.ORG,
+            apiKey: process.env.API_KEY,
         });
         const openai = new OpenAIApi(configuration);
         const response = await openai.createImage({
