@@ -21,7 +21,7 @@ index.post('/imagine', (req, res) => {
         const openai = new OpenAIApi(configuration);
         const response = await openai.createImage({
             prompt: prompt,
-            n: 4,
+            n: 1,
             size: "1024x1024",
         });
         res.json(response.data);
